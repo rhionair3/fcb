@@ -28,10 +28,10 @@ module.exports = function(sequelize, DataTypes) {
 		employeeRoleId: {
 			type: DataTypes.INTEGER(10).UNSIGNED,
 			allowNull: false,
-			// references: {
-			// 	model: 'employee_roles',
-			// 	key: 'id'
-			// },
+			references: {
+				model: 'employee_roles',
+				key: 'id'
+			},
 			field: 'employee_role_id'
 		},
 		isActive: {
@@ -59,11 +59,9 @@ module.exports = function(sequelize, DataTypes) {
 		tableName: 'employees'
 	});
 
-	// employees.associate = function (models) {
-	// 	models.employees.belongsTo(models.employee_roles, {
-	// 		onDelete: "SET NULL",
-	// 	});
-	// };
+	employees.associate = function (models) {
+		models.employees.belongsTo(models.employee_roles);
+	};
 
 	return employees;
 };

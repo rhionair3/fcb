@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'code'
 		},
 		franchiseId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER(10).UNSIGNED,
 			allowNull: true,
 			references: {
 				model: 'users',

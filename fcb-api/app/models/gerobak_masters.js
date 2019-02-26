@@ -1,9 +1,9 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	var gerobak_masters = sequelize.define('gerobakMasters', {
+	var gerobakMasters = sequelize.define('gerobakMasters', {
 		id: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER(11).UNSIGNED,
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true,
@@ -48,9 +48,9 @@ module.exports = function(sequelize, DataTypes) {
 		tableName: 'gerobak_masters'
 	});
 
-	gerobak_masters.associate = function (models) {
-		models.gerobak_masters.hasOne(models.gerobaks);
+	gerobakMasters.associate = function (models) {
+		models.gerobakMasters.belongTo(models.gerobaks);
 	};
 
-	return gerobak_masters;
+	return gerobakMasters;
 };

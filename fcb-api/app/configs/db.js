@@ -37,6 +37,10 @@ brambangDB.kota = require('../models/regencies')(sequelize, Sequelize);
 brambangDB.kecamatan = require('../models/districts')(sequelize, Sequelize);
 brambangDB.kodepos = require('../models/postals')(sequelize, Sequelize);
 
+
+brambangDB.regencyGroups = require('../models/regency_groups')(sequelize, Sequelize);
+brambangDB.sales = require('../models/sales')(sequelize, Sequelize);
+
 brambangDB.menus = require('../models/menus')(sequelize, Sequelize);
 
 module.exports = brambangDB;

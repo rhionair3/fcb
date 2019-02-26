@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
 	var gerobaks = sequelize.define('gerobaks', {
 		id: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER(11).UNSIGNED,
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'code_no'
 		},
 		franchiseId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER(10).UNSIGNED,
 			allowNull: false,
 			references: {
 				model: 'users',
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'franchise_id'
 		},
 		gerobakId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER(11).UNSIGNED,
 			allowNull: false,
 			references: {
 				model: 'gerobak_masters',
@@ -57,18 +57,8 @@ module.exports = function(sequelize, DataTypes) {
 	});
 
 	gerobaks.associate = function (models) {
-		models.gerobaks.belongsTo(models.gerobak_masters, {
-			onDelete: "CASCADE",
-			foreignKey: {
-				allowNull: false
-			}
-		});
-		models.gerobaks.belongsTo(models.users, {
-			onDelete: "CASCADE",
-			foreignKey: {
-				allowNull: false
-			}
-		});
+		models.gerobaks.belongsTo(models.gerobak_masters);
+		models.gerobaks.belongsTo(models.users);
 	};
 
 	return gerobaks;

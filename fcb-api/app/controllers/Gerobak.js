@@ -5,8 +5,8 @@ const Gerobak = brambangDB.franchiseGerobak;
 exports.createGerobak = (req, res) => {
     Gerobak.create({
         code_no: req.body.code_no,
-        franchise_id: req.body.franchise_id,
-        gerobak_id: req.body.gerobak_id,
+        franchiseId: req.body.franchise_id,
+        gerobakId: req.body.gerobak_id,
         createdAt: new Date(),
         createdBy: req.body.createdBy,
         updatedAt: "",
@@ -27,9 +27,9 @@ exports.createGerobak = (req, res) => {
 exports.listGerobak = (req, res) => {
     Gerobak.findAll({
         include: [{
-            model: Gerobak,
+            model: brambangDB.masterGerobak,
             through: {
-                attributes: ['gerobak_id', 'id']
+                attributes: ['gerobakId', 'id']
             }
         }]
     }).then(gerobak => {
@@ -51,9 +51,9 @@ exports.detailGerobak = (req, res) => {
             id: req.id
         },
         include: [{
-            model: Gerobak,
+            model: brambangDB.masterGerobak,
             through: {
-                attributes: ['gerobak_id', 'id']
+                attributes: ['gerobakId', 'id']
             }
         }]
     }).then(gerobak => {

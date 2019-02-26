@@ -26,7 +26,7 @@ exports.provincy = (req, res) => {
 exports.regency = (req, res) => {
     Regency.findAll({
         where: {
-            province_id: req.body.province_id
+            provinceId: req.body.province_id
         }
     }).then(regency => {
         res.status(200).json({
@@ -43,7 +43,7 @@ exports.regency = (req, res) => {
 exports.district = (req, res) => {
     District.findAll({
         where: {
-            regency_id: req.body.regency_id
+            regencyId: req.body.regency_id
         }
     }).then(district => {
         res.status(200).json({
@@ -61,7 +61,7 @@ exports.district = (req, res) => {
 exports.postal = (req, res) => {
     Postal.findAll({
         where: {
-            district_id: req.body.district_id
+            districtId: req.body.district_id
         }
     }).then(postal => {
         res.status(200).json({

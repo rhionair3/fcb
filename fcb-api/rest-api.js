@@ -10,14 +10,18 @@ require('./app/routes/routes.js')(brambangApp);
 const brambangDB = require('./app/configs/db.js');
 
 const Aturan = brambangDB.aturan;
-brambangDB.sequelize.sync({
-    force: false
-}).then(() => {
-    console.log('sinkronisasi data { force : true }');
-    // inisialisasi();
-})
 
-var Port = 8082;
+brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
+    brambangDB.sequelize.sync({
+        force: false
+    }).then(() => {
+        console.log('sinkronisasi data { force : true }');
+    
+        inisialisasi();
+    });
+});
+
+var Port = 3030;
 
 var brambangSrv = brambangApp.listen(Port, function () {
     var brambangHost = brambangSrv.address().address
@@ -27,24 +31,20 @@ var brambangSrv = brambangApp.listen(Port, function () {
 })
 
 function inisialisasi() {
-    Aturan.create({
+    Aturan.bulkCreate([{
         id: 28,
-        role_name: "Super Admin"
-    });
-    Aturan.create({
+        roleName: "Super Admin"
+    },{
         id: 29,
-        role_name: "Admin"
-    });
-    Aturan.create({
+        roleName: "Admin"
+    },{
         id: 30,
-        role_name: "Acount Manager"
-    });
-    Aturan.create({
+        roleName: "Acount Manager"
+    },{
         id: 31,
-        role_name: "Staff Gudang"
-    });
-    Aturan.create({
+        roleName: "Staff Gudang"
+    },{
         id: 32,
-        role_name: "Staff Administrasi"
-    });
+        roleName: "Staff Administrasi"
+    }]);
 }

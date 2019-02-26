@@ -1,3 +1,5 @@
 /fcb-api/node_modules
 /fcb-web/node_modules
+/fcb-web/package-lock.json
+/fcb-api/package-lock.json
 .gitignote

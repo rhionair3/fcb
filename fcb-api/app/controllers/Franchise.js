@@ -82,38 +82,36 @@ exports.createFranchise = (req, res) => {
         resetPasswordToken: req.body.resetPasswordToken,
         resetPasswordExpired: req.body.resetPasswordExpired,
         fullname: req.body.fullname,
-        identity_no: req.body.identity_no,
+        indentityNo: req.body.identity_no,
         city: req.body.city,
         mobile: req.body.mobile,
         mobileToken: req.body.mobileToken,
-        status_mobile: req.body.status_mobile,
+        statusMobile: req.body.status_mobile,
         bank_name: req.body.bank_name,
-        bank_account_no: req.body.bank_account_no,
-        bank_account_name: req.body.bank_account_name,
+        bankAccountNo: req.body.bank_account_no,
+        bankAccountName: req.body.bank_account_name,
         createdAt: new Date(),
         status: req.body.status,
         provider: req.body.provider,
-        sales_id: req.body.sales_id,
-        role_id: req.body.role_id,
-        device_id: req.body.device_id
+        salesId: req.body.sales_id,
+        roleId: req.body.role_id,
+        deviceId: req.body.device_id
 
     }).then(franchise => {
         FranchiseDetail.create({
-            user_id: franchise.id,
-            province_id: req.body.province_id,
-            regency_id: req.body.regency_id,
-            district_id: req.body.district_id,
-            postal_id: req.body.postal_id,
+            userId: franchise.id,
+            proviceId: req.body.province_id,
+            regencyId: req.body.regency_id,
+            districtId: req.body.district_id,
+            postalId: req.body.postal_id,
             name: req.body.name,
             owner: req.body.owner,
             address: req.body.address,
             contact_no: req.body.contact_no,
             isDefault: req.body.isDefault,
             isDeleted: req.body.isDeleted,
-            createdAt: req.body.createdAt,
-            createdBy: req.body.createdBy,
-            updatedAt: new Date(),
-            updatedBy: req.body.updatedBy
+            createdAt: new Date(),
+            createdBy: req.body.createdBy
         }).then(fdetail => {
             res.status(200).json({
                 "deskripsi": "Data Franchise Dan Detail Franchise Ditambahkan",
@@ -144,21 +142,16 @@ exports.editFranchise = (req, res) => {
         resetPasswordToken: req.body.resetPasswordToken,
         resetPasswordExpired: req.body.resetPasswordExpired,
         fullname: req.body.fullname,
-        identity_no: req.body.identity_no,
+        indentityNo: req.body.identity_no,
         city: req.body.city,
         mobile: req.body.mobile,
         mobileToken: req.body.mobileToken,
-        status_mobile: req.body.status_mobile,
+        statusMobile: req.body.status_mobile,
         bank_name: req.body.bank_name,
-        bank_account_no: req.body.bank_account_no,
-        bank_account_name: req.body.bank_account_name,
-        createdAt: req.body.createdAt,
+        bankAccountNo: req.body.bank_account_no,
+        bankAccountName: req.body.bank_account_name,
         updatedAt: new Date(),
-        status: req.body.status,
-        provider: req.body.provider,
-        sales_id: req.body.sales_id,
-        role_id: req.body.role_id,
-        device_id: req.body.device_id
+        status: req.body.status
 
     }, {
         where: {
@@ -178,22 +171,20 @@ exports.editFranchise = (req, res) => {
 }
 
 exports.createFranchiseDetail = (req, res) => {
-    FranchiseDetail.update({
-        user_id: req.body.user_id,
-        province_id: req.body.province_id,
-        regency_id: req.body.regency_id,
-        district_id: req.body.district_id,
-        postal_id: req.body.postal_id,
+    FranchiseDetail.create({
+        userId: franchise.id,
+        proviceId: req.body.province_id,
+        regencyId: req.body.regency_id,
+        districtId: req.body.district_id,
+        postalId: req.body.postal_id,
         name: req.body.name,
         owner: req.body.owner,
         address: req.body.address,
         contact_no: req.body.contact_no,
         isDefault: req.body.isDefault,
         isDeleted: req.body.isDeleted,
-        createdAt: req.body.createdAt,
-        createdBy: req.body.createdBy,
-        updatedAt: new Date(),
-        updatedBy: req.body.updatedBy
+        createdAt: new Date(),
+        createdBy: req.body.createdBy
     }).then(fdetail => {
         res.status(200).json({
             "deskripsi": "Tambah Data Detail Franchise",
@@ -209,21 +200,19 @@ exports.createFranchiseDetail = (req, res) => {
 
 exports.editFranchiseDetail = (req, res) => {
     FranchiseDetail.update({
-        user_id: req.body.user_id,
-        province_id: req.body.province_id,
-        regency_id: req.body.regency_id,
-        district_id: req.body.district_id,
-        postal_id: req.body.postal_id,
+        userId: franchise.id,
+        proviceId: req.body.province_id,
+        regencyId: req.body.regency_id,
+        districtId: req.body.district_id,
+        postalId: req.body.postal_id,
         name: req.body.name,
         owner: req.body.owner,
         address: req.body.address,
         contact_no: req.body.contact_no,
         isDefault: req.body.isDefault,
         isDeleted: req.body.isDeleted,
-        createdAt: req.body.createdAt,
-        createdBy: req.body.createdBy,
         updatedAt: new Date(),
-        updatedBy: req.body.updatedBy
+        updatedBy: req.body.createdBy
     }, {
         where: {
             id: req.body.id
