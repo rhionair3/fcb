@@ -3,30 +3,30 @@
 module.exports = function(sequelize, DataTypes) {
 	var employees =  sequelize.define('employees', {
 		id: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true,
 			field: 'id'
 		},
 		employeeCode: {
-			type: DataTypes.STRING(225),
+			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true,
 			field: 'employee_code'
 		},
 		fullname: {
-			type: DataTypes.STRING(30),
+			type: DataTypes.STRING,
 			allowNull: false,
 			field: 'fullname'
 		},
 		password: {
-			type: DataTypes.STRING(225),
+			type: DataTypes.STRING,
 			allowNull: false,
 			field: 'password'
 		},
 		employeeRoleId: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			references: {
 				model: 'employee_roles',
@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'employee_role_id'
 		},
 		isActive: {
-			type: DataTypes.INTEGER(1),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			field: 'isActive'
 		},
@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		isResetPassword: {
-			type: DataTypes.INTEGER(1),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			defaultValue: '0',
 			field: 'is_reset_password'
@@ -58,10 +58,6 @@ module.exports = function(sequelize, DataTypes) {
 	}, {
 		tableName: 'employees'
 	});
-
-	employees.associate = function (models) {
-		models.employees.belongsTo(models.employee_roles);
-	};
 
 	return employees;
 };

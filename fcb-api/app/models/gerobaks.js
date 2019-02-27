@@ -2,20 +2,13 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var gerobaks = sequelize.define('gerobaks', {
-		id: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		codeNo: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'code_no'
 		},
 		franchiseId: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			references: {
 				model: 'users',
@@ -24,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'franchise_id'
 		},
 		gerobakId: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			references: {
 				model: 'gerobak_masters',
@@ -38,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'createdAt'
 		},
 		createdBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'createdBy'
 		},
@@ -48,18 +41,13 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		updatedBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'updatedBy'
 		}
 	}, {
 		tableName: 'gerobaks'
 	});
-
-	gerobaks.associate = function (models) {
-		models.gerobaks.belongsTo(models.gerobak_masters);
-		models.gerobaks.belongsTo(models.users);
-	};
 
 	return gerobaks;
 };

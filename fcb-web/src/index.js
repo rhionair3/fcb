@@ -6,9 +6,9 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import '../public/themes/Global.css';
 import BrambangLayout from './Main/Layout';
 import Beranda from './Components/Beranda/Index';
-// import Franchise from './Components/Franchise/Screens/Index';
+import Franchise from './Components/Franchise/Screens/Index';
 // import Gerobak from './Components/Gerobak/Screens/Index';
-// import MasterGerobak from './Components/Gerobak/Screens/Master';
+import MasterGerobak from './Components/MGerobak/Screens/Index';
 // import DataKoki from './Components/Koki/Screens/Index';
 // import DataTraining from './Components/Training/Screens/Index';
 // import MasterMenu from './Components/Menu/Screens/Index';
@@ -26,11 +26,12 @@ const BrambangApp = () => (
         <GetChildren>
             <BrambangLayout>
                 <Route exact path="/" component={Beranda} />
+                <Route exact path="/master-gerobak" component={MasterGerobak} />
+                <Route exact path="/franchise" component={Franchise} />
                 {/* <Route exact path="/franchise" component={Franchise} />
                 <Route exact path="/gerobak" component={Gerobak} />
                 <Route exact path="/koki" component={DataKoki} />
                 <Route exact path="/training" component={DataTraining} />
-                <Route exact path="/master-gerobak" component={MasterGerobak} />
                 <Route exact path="/master-menu" component={MasterMenu} /> */}
             </BrambangLayout>
         </GetChildren>

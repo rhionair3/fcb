@@ -2,26 +2,19 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var users = sequelize.define('users', {
-		id: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		username: {
-			type: DataTypes.STRING(32),
+			type: DataTypes.STRING,
 			allowNull: true,
 			unique: true,
 			field: 'username'
 		},
 		email: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'email'
 		},
 		emailToken: {
-			type: DataTypes.STRING(32),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'emailToken'
 		},
@@ -31,12 +24,13 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'emailTokenExpired'
 		},
 		password: {
-			type: DataTypes.STRING(255),
-			allowNull: false,
+			type: DataTypes.STRING,
+			defaultValue: '12345678',
+			allowNull: true,
 			field: 'password'
 		},
 		resetPasswordToken: {
-			type: DataTypes.STRING(32),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'resetPasswordToken'
 		},
@@ -46,48 +40,48 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'resetPasswordExpired'
 		},
 		fullname: {
-			type: DataTypes.STRING(125),
+			type: DataTypes.STRING,
 			allowNull: false,
 			field: 'fullname'
 		},
 		identityNo: {
-			type: DataTypes.STRING(24),
+			type: DataTypes.STRING,
 			allowNull: true,
 			unique: true,
 			field: 'identity_no'
 		},
 		city: {
-			type: DataTypes.STRING(64),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'city'
 		},
 		mobile: {
-			type: DataTypes.STRING(16),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'mobile'
 		},
 		mobileToken: {
-			type: DataTypes.STRING(6),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'mobileToken'
 		},
 		statusMobile: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'status_mobile'
 		},
 		bankName: {
-			type: DataTypes.STRING(50),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'bank_name'
 		},
 		bankAccountNo: {
-			type: DataTypes.STRING(16),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'bank_account_no'
 		},
 		bankAccountName: {
-			type: DataTypes.STRING(125),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'bank_account_name'
 		},
@@ -103,18 +97,19 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		status: {
-			type: DataTypes.INTEGER(6),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'status'
 		},
 		provider: {
-			type: DataTypes.STRING(15),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'provider'
 		},
 		salesId: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
-			allowNull: false,
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			defaultValue: 0,
 			references: {
 				model: 'sales',
 				key: 'id'
@@ -122,8 +117,9 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'sales_id'
 		},
 		rolesId: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: false,
+			defaultValue: 19,
 			references: {
 				model: 'roles',
 				key: 'id'
@@ -131,22 +127,20 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'roles_id'
 		},
 		deviceId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: '1',
 			field: 'device_id'
+		}, 
+		userType : {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			defaultValue: 1,
+			field: 'user_type'
 		}
 	}, {
 		tableName: 'users'
 	});
-
-	users.associate = function (models) {
-		models.users.belongsTo(models.roles);
-		models.users.belongsTo(models.sales);
-		models.users.hasMany(models.usersShippingAddress);
-		models.users.hasMany(models.kokis);
-		models.users.hasMany(models.gerobaks);
-	};
 
 
 	return users;

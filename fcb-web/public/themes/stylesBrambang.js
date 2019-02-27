@@ -101,6 +101,10 @@ const stylesBrambang = theme => ({
         background: 'linear-gradient(45deg, #27ae60 30%, #2ecc71 90%)',
         color: '#ffffff'
     },
+    btnDefault: {
+        background: 'linear-gradient(45deg, #7f8c8d 30%, #bdc3c7 90%)',
+        color: '#ffffff'
+    },
     btnInfo: {
         background: 'linear-gradient(45deg, #2980b9 30%, #3498db 90%)',
         color: '#ffffff'

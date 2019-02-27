@@ -31,7 +31,7 @@ module.exports = {
         contentBase : parentDir + './public/',
         historyApiFallback : true,
         inline: true,
-        port: 3030
+        port: 3033
     }
 
 }

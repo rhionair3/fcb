@@ -2,15 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var employeeRoles = sequelize.define('employeeRoles', {
-		id: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		roleName: {
-			type: DataTypes.STRING(30),
+			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true,
 			field: 'role_name'

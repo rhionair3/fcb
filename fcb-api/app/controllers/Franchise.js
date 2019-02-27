@@ -23,9 +23,10 @@ exports.detailFranchise = (req, res) => {
 }
 
 exports.detailFranchiseDetail = (req, res) => {
-    FranchiseDetail.findAll({
+    FranchiseDetail.findOne({
         where: {
-            user_id: req.body.franchise_id
+            usersId: req.body.usersId,
+            isDefault: 1
         },
     }).then(franchise => {
         res.status(200).json({
@@ -41,7 +42,11 @@ exports.detailFranchiseDetail = (req, res) => {
 }
 
 exports.listFranchise = (req, res) => {
-    Franchise.findAll().then(franchises => {
+    Franchise.findAll({
+      where: {
+        rolesId: 19
+      }
+    }).then(franchises => {
         res.status(200).json({
             'deskripsi': 'List Franchise',
             'franchises': franchises
@@ -73,76 +78,43 @@ exports.listKokiFranchise = (req, res) => {
 }
 
 exports.createFranchise = (req, res) => {
+  let data = req.body.dataSimpan;
+  console.log("data di tambah franchise : " + data);
+  brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
     Franchise.create({
-        username: req.body.username,
-        email: req.body.email,
-        emailToken: req.body.emailToken,
-        emailTokenExpired: req.body.emailTokenExpired,
-        password: req.body.password,
-        resetPasswordToken: req.body.resetPasswordToken,
-        resetPasswordExpired: req.body.resetPasswordExpired,
-        fullname: req.body.fullname,
-        indentityNo: req.body.identity_no,
-        city: req.body.city,
-        mobile: req.body.mobile,
-        mobileToken: req.body.mobileToken,
-        statusMobile: req.body.status_mobile,
-        bank_name: req.body.bank_name,
-        bankAccountNo: req.body.bank_account_no,
-        bankAccountName: req.body.bank_account_name,
+        username: data.username,
+        email: data.email,
+        fullname: data.fullname,
+        identityNo: data.identityNo,
+        city: data.city,
+        mobile: data.mobile,
         createdAt: new Date(),
-        status: req.body.status,
-        provider: req.body.provider,
-        salesId: req.body.sales_id,
-        roleId: req.body.role_id,
-        deviceId: req.body.device_id
+        status: data.status,
+        roleId: data.role_id,
+        userType: data.userType
 
     }).then(franchise => {
-        FranchiseDetail.create({
-            userId: franchise.id,
-            proviceId: req.body.province_id,
-            regencyId: req.body.regency_id,
-            districtId: req.body.district_id,
-            postalId: req.body.postal_id,
-            name: req.body.name,
-            owner: req.body.owner,
-            address: req.body.address,
-            contact_no: req.body.contact_no,
-            isDefault: req.body.isDefault,
-            isDeleted: req.body.isDeleted,
-            createdAt: new Date(),
-            createdBy: req.body.createdBy
-        }).then(fdetail => {
-            res.status(200).json({
-                "deskripsi": "Data Franchise Dan Detail Franchise Ditambahkan",
-                "franchise": franchise,
-                "franchisedetail": fdetail
-            });
-        }).catch(err => {
-            res.status(500).json({
-                "description": "Tidak Dapat Menyimpan Data Detail Franchise",
-                "error": err
-            });
-        })
+        res.status(200).json({
+            "deskripsi": "Data Franchise Franchise Ditambahkan",
+            "franchise": franchise
+        });
     }).catch(err => {
         res.status(500).json({
             "description": "Tidak Dapat Menambah Data Franchise",
             "error": err
         });
     })
+  });
 }
 
 exports.editFranchise = (req, res) => {
     Franchise.update({
+        userType: req.body.userType,
         username: req.body.username,
         email: req.body.email,
-        emailToken: req.body.emailToken,
-        emailTokenExpired: req.body.emailTokenExpired,
         password: req.body.password,
-        resetPasswordToken: req.body.resetPasswordToken,
-        resetPasswordExpired: req.body.resetPasswordExpired,
         fullname: req.body.fullname,
-        indentityNo: req.body.identity_no,
+        identityNo: req.body.identityNo,
         city: req.body.city,
         mobile: req.body.mobile,
         mobileToken: req.body.mobileToken,
@@ -171,51 +143,57 @@ exports.editFranchise = (req, res) => {
 }
 
 exports.createFranchiseDetail = (req, res) => {
-    FranchiseDetail.create({
-        userId: franchise.id,
-        proviceId: req.body.province_id,
-        regencyId: req.body.regency_id,
-        districtId: req.body.district_id,
-        postalId: req.body.postal_id,
-        name: req.body.name,
-        owner: req.body.owner,
-        address: req.body.address,
-        contact_no: req.body.contact_no,
-        isDefault: req.body.isDefault,
-        isDeleted: req.body.isDeleted,
-        createdAt: new Date(),
-        createdBy: req.body.createdBy
-    }).then(fdetail => {
-        res.status(200).json({
-            "deskripsi": "Tambah Data Detail Franchise",
-            "franchisedetail": fdetail
-        });
-    }).catch(err => {
-        res.status(500).json({
-            "description": "Tidak Dapat Tambah Data Detail Franchise",
-            "error": err
-        });
+    let data = req.body.dataSimpan;
+    console.log(data);
+
+    brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
+        FranchiseDetail.create({
+            usersId: data.franchiseId,
+            provinceId: data.provinceId,
+            regencyId: data.regencyId,
+            districtId: data.districtId,
+            postalId: data.postalId,
+            name: data.name,
+            owner: data.owner,
+            address: data.address,
+            contactNo: data.contactNo,
+            isDefault: data.isDefault,
+            isDeleted: data.isDeleted,
+            createdAt: new Date(),
+            createdBy: 1
+        }).then(fdetail => {
+            res.status(200).json({
+                "deskripsi": "Tambah Data Detail Franchise",
+                "franchisedetail": fdetail
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "description": "Tidak Dapat Tambah Data Detail Franchise",
+                "error": err
+            });
+        })
     })
 }
 
 exports.editFranchiseDetail = (req, res) => {
+    
     FranchiseDetail.update({
-        userId: franchise.id,
-        proviceId: req.body.province_id,
-        regencyId: req.body.regency_id,
-        districtId: req.body.district_id,
-        postalId: req.body.postal_id,
-        name: req.body.name,
-        owner: req.body.owner,
-        address: req.body.address,
-        contact_no: req.body.contact_no,
-        isDefault: req.body.isDefault,
-        isDeleted: req.body.isDeleted,
+        userId: data.franchiseId,
+        proviceId: data.province_id,
+        regencyId: data.regency_id,
+        districtId: data.district_id,
+        postalId: data.postal_id,
+        name: data.name,
+        owner: data.owner,
+        address: data.address,
+        contact_no: data.contact_no,
+        isDefault: data.isDefault,
+        isDeleted: data.isDeleted,
         updatedAt: new Date(),
-        updatedBy: req.body.createdBy
+        updatedBy: data.createdBy
     }, {
         where: {
-            id: req.body.id
+            id: data.id
         }
     }).then(fdetail => {
         res.status(200).json({

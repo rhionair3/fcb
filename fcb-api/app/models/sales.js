@@ -2,15 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var sales = sequelize.define('sales', {
-		id: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		fullnamesales: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'fullname'
 		},
@@ -20,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'createdAt'
 		},
 		createdBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'createdBy'
 		},
@@ -30,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		updatedBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'updatedBy'
 		},
@@ -40,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'incentive_percentage'
 		},
 		maximumIncentivePerUser: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			field: 'maximum_incentive_per_user'
 		}

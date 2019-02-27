@@ -2,15 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var districts =  sequelize.define('districts', {
-		id: {
-			type: DataTypes.INTEGER(10),
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		regencyId: {
-			type: DataTypes.INTEGER(10),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			references: {
 				model: 'regencies',
@@ -19,37 +12,30 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'regency_id'
 		},
 		name: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: false,
 			field: 'name'
 		},
 		areaCode: {
-			type: DataTypes.STRING(10),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'area_code'
 		},
 		sapAreaCode: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'sap_area_code'
 		},
 		tlcArea: {
-			type: DataTypes.STRING(32),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'tlc_area'
 		}
 	}, {
+			timestamps: false
+	}, {
 		tableName: 'districts'
 	});
-
-	districts.associate = function (models) {
-		models.districts.belongsTo(models.regencies, {
-			onDelete: "CASCADE",
-			foreignKey: {
-				allowNull: false
-			}
-		});
-	};
 
 	return districts;
 };

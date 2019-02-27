@@ -22,6 +22,7 @@ module.exports = function (brambang) {
     brambang.post("/api/master/detail-gerobak", [brambangJWT.verifikasiToken], mgerobak.detailGerobak);
     brambang.post("/api/master/tambah-gerobak", [brambangJWT.verifikasiToken], mgerobak.createGerobak);
     brambang.post("/api/master/edit-gerobak", [brambangJWT.verifikasiToken], mgerobak.editGerobak);
+    brambang.post("/api/master/delete-gerobak", [brambangJWT.verifikasiToken], mgerobak.setDeleteGerobak);
     //... End Rest Master Gerobak
 
     // Rest Api Gerobak

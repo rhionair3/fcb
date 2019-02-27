@@ -18,7 +18,6 @@ exports.registrasi = (req, res) => {
             employeeRoleId: req.body.employee_role_id,
             isActive: req.body.isActive,
             createdAt: new Date(),
-            updatedAt: "",
             is_reset_password: req.body.is_reset_password
         }).then(pengguna => {
             console.log(pengguna);

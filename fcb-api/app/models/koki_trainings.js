@@ -2,20 +2,13 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var kokiTrainings = sequelize.define('kokiTrainings', {
-		id: {
-			type: DataTypes.INTEGER(11),
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		code: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'code'
 		},
 		kokiId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
 				model: 'kokis',
@@ -28,13 +21,13 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			field: 'startAt'
 		},
-		expireAt: {
+		expiredAt: {
 			type: DataTypes.DATE,
 			allowNull: true,
 			field: 'expireAt'
 		},
 		status: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'status'
 		},
@@ -44,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'createdAt'
 		},
 		createdBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'createdBy'
 		},
@@ -54,22 +47,13 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		updatedBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'updatedBy'
 		}
 	}, {
 		tableName: 'koki_trainings'
 	});
-
-	kokiTrainings.associate = function (models) {
-		models.kokiTrainings.belongsTo(models.kokis, {
-			onDelete: "CASCADE",
-			foreignKey: {
-				allowNull: false
-			}
-		});
-	};
 
 	return kokiTrainings;
 };

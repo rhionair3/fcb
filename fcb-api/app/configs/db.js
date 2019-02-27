@@ -28,6 +28,7 @@ brambangDB.franchiseAturan = require('../models/roles')(sequelize, Sequelize);
 brambangDB.franchise = require('../models/users')(sequelize, Sequelize);
 brambangDB.franchiseShip = require('../models/users_shipping_address')(sequelize, Sequelize);
 brambangDB.franchiseGerobak = require('../models/gerobaks')(sequelize, Sequelize);
+brambangDB.gerobakTransaction = require('../models/gerobak_transactions')(sequelize, Sequelize);
 brambangDB.koki = require('../models/kokis')(sequelize, Sequelize);
 brambangDB.kokiTraining = require('../models/koki_trainings')(sequelize, Sequelize);
 brambangDB.kokiSertifikat = require('../models/koki_sertifikats')(sequelize, Sequelize);
@@ -42,5 +43,8 @@ brambangDB.regencyGroups = require('../models/regency_groups')(sequelize, Sequel
 brambangDB.sales = require('../models/sales')(sequelize, Sequelize);
 
 brambangDB.menus = require('../models/menus')(sequelize, Sequelize);
+
+// Assosiation database
+
 
 module.exports = brambangDB;

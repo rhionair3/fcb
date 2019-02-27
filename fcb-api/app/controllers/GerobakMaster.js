@@ -7,6 +7,7 @@ exports.createGerobak = (req, res) => {
         code: req.body.code,
         name: req.body.name,
         status: req.body.status,
+        isDeleted: req.body.isDeleted,
         createdAt: new Date(),
         createdBy: req.body.createdBy
     }).then(gerobak => {
@@ -59,6 +60,7 @@ exports.editGerobak = (req, res) => {
         code: req.body.code,
         name: req.body.name,
         status: req.body.status,
+        isDeleted: req.body.isDeleted,
         updatedAt: new Date(),
         updatedBy: req.body.updatedBy
     }, {
@@ -74,6 +76,26 @@ exports.editGerobak = (req, res) => {
         res.status(500).json({
             "deskripsi": "Tidak Dapat Memperbaharui Detail Gerobak",
             "gerobak": "Gagal Memperbaharui Detail Gerobak"
+        });
+    })
+}
+
+exports.setDeleteGerobak = (req, res) => {
+    MGerobak.update({
+        isDeleted: 1,
+    }, {
+        where: {
+            id: req.body.id
+        }
+    }).then(gerobak => {
+        res.status(200).json({
+            'deskripsi': 'Sukses Menghapus Gerobak',
+            'gerobak': gerobak
+        })
+    }).catch(error => {
+        res.status(500).json({
+            "deskripsi": "Tidak Dapat Menghapus Detail Gerobak",
+            "gerobak": "Gagal Menghapus Detail Gerobak"
         });
     })
 }

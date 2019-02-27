@@ -2,20 +2,13 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var kokiSertifikat =  sequelize.define('kokiSertifikats', {
-		id: {
-			type: DataTypes.INTEGER(11),
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		code: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'code'
 		},
 		kokiId: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
 				model: 'kokis',
@@ -29,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'createdAt'
 		},
 		createdBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'createdBy'
 		},
@@ -39,22 +32,13 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		updatedBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'updatedBy'
 		}
 	}, {
 		tableName: 'koki_sertifikats'
 	});
-
-	kokiSertifikat.associate = function (models) {
-		models.kokiSertifikat.belongsTo(models.kokis, {
-			onDelete: "CASCADE",
-			foreignKey: {
-				allowNull: false
-			}
-		});
-	};
 
 	return kokiSertifikat;
 };

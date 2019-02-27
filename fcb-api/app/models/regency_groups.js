@@ -2,30 +2,23 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var regencyGroups = sequelize.define('regencyGroups', {
-		id: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		nameGroup: {
-			type: DataTypes.STRING(100),
+			type: DataTypes.STRING,
 			allowNull: false,
 			field: 'name'
 		},
 		minEstimatedDeliveryDayGroup: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			field: 'min_estimated_delivery_day'
 		},
 		maxEstimatedDeliveryDayGroup: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			field: 'max_estimated_delivery_day'
 		},
 		active: {
-			type: DataTypes.INTEGER(1),
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			field: 'active'
 		},

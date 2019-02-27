@@ -2,20 +2,13 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var kokis = sequelize.define('kokis', {
-		id: {
-			type: DataTypes.INTEGER(11),
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true,
-			field: 'id'
-		},
 		code: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'code'
 		},
 		franchiseId: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
 				model: 'users',
@@ -24,17 +17,27 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'franchise_id'
 		},
 		identityId: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'identity_id'
 		},
 		fullname: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING,
 			allowNull: true,
 			field: 'fullname'
 		},
+		sertifikatId: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			field: 'sertifikat_id'
+		},
+		lastTraining: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			field: 'sesi_training'
+		},
 		status: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'status'
 		},
@@ -44,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'createdAt'
 		},
 		createdBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'createdBy'
 		},
@@ -54,18 +57,12 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		},
 		updatedBy: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			field: 'updatedBy'
 		}
 	}, {
 		tableName: 'kokis'
 	});
-
-	kokis.associate = function (models) {
-		models.kokis.hasMany(models.kokiTrainings);
-		models.kokis.hasMany(models.kokiSertifikat);
-	};
-
 	return kokis;
 };

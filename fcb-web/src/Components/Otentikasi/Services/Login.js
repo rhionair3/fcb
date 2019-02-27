@@ -1,5 +1,5 @@
 export const getLogin = (data) => {
-    fetch('http://192.168.1.52:8082/api/login-pengguna', {
+    fetch('http://192.168.1.52:3030/api/login-pengguna', {
         method: 'POST',
         body: JSON.stringify({
             email: data.email,
