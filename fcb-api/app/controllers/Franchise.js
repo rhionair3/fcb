@@ -3,6 +3,7 @@ const brambangDB = require('../configs/db');
 const Franchise = brambangDB.franchise;
 const FranchiseDetail = brambangDB.franchiseShip;
 const FranchiseKoki = brambangDB.koki;
+const getCode = require('../services/generateCode');
 
 exports.detailFranchise = (req, res) => {
     Franchise.findOne({
@@ -78,56 +79,60 @@ exports.listKokiFranchise = (req, res) => {
 }
 
 exports.createFranchise = (req, res) => {
-  let data = req.body.dataSimpan;
-  console.log("data di tambah franchise : " + data);
-  brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
-    Franchise.create({
+    let fCode = getCode.generateFranchiseCode('data');
+    let data = req.body.dataSimpan;
+    fCode.then(result => {
+        brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then(function () {
+            Franchise.create({
+                asFranchiseCode: result,
+                username: data.username,
+                email: data.email,
+                fullname: data.fullname,
+                identityNo: data.identityNo,
+                city: data.city,
+                mobile: data.mobile,
+                createdAt: new Date(),
+                status: data.status,
+                roleId: data.role_id,
+                userType: data.userType
+
+            }).then(franchise => {
+                res.status(200).json({
+                    "deskripsi": "Data Franchise Franchise Ditambahkan",
+                    "franchise": franchise
+                });
+            }).catch(err => {
+                res.status(500).json({
+                    "description": "Tidak Dapat Menambah Data Franchise",
+                    "error": err
+                });
+            })
+        });
+    })
+}
+
+exports.editFranchise = (req, res) => {
+    let data = req.body.dataSimpan;
+    Franchise.update({
+        userType: data.userType,
         username: data.username,
         email: data.email,
+        password: data.password,
         fullname: data.fullname,
         identityNo: data.identityNo,
         city: data.city,
         mobile: data.mobile,
-        createdAt: new Date(),
-        status: data.status,
-        roleId: data.role_id,
-        userType: data.userType
-
-    }).then(franchise => {
-        res.status(200).json({
-            "deskripsi": "Data Franchise Franchise Ditambahkan",
-            "franchise": franchise
-        });
-    }).catch(err => {
-        res.status(500).json({
-            "description": "Tidak Dapat Menambah Data Franchise",
-            "error": err
-        });
-    })
-  });
-}
-
-exports.editFranchise = (req, res) => {
-    Franchise.update({
-        userType: req.body.userType,
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        fullname: req.body.fullname,
-        identityNo: req.body.identityNo,
-        city: req.body.city,
-        mobile: req.body.mobile,
-        mobileToken: req.body.mobileToken,
-        statusMobile: req.body.status_mobile,
-        bank_name: req.body.bank_name,
-        bankAccountNo: req.body.bank_account_no,
-        bankAccountName: req.body.bank_account_name,
+        mobileToken: data.mobileToken,
+        statusMobile: data.status_mobile,
+        bank_name: data.bank_name,
+        bankAccountNo: data.bank_account_no,
+        bankAccountName: data.bank_account_name,
         updatedAt: new Date(),
-        status: req.body.status
+        status: data.status
 
     }, {
         where: {
-            id: req.body.id
+            id: data.id
         }
     }).then(franchise => {
         res.status(200).json({
@@ -144,8 +149,6 @@ exports.editFranchise = (req, res) => {
 
 exports.createFranchiseDetail = (req, res) => {
     let data = req.body.dataSimpan;
-    console.log(data);
-
     brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
         FranchiseDetail.create({
             usersId: data.franchiseId,
@@ -176,35 +179,37 @@ exports.createFranchiseDetail = (req, res) => {
 }
 
 exports.editFranchiseDetail = (req, res) => {
-    
-    FranchiseDetail.update({
-        userId: data.franchiseId,
-        proviceId: data.province_id,
-        regencyId: data.regency_id,
-        districtId: data.district_id,
-        postalId: data.postal_id,
-        name: data.name,
-        owner: data.owner,
-        address: data.address,
-        contact_no: data.contact_no,
-        isDefault: data.isDefault,
-        isDeleted: data.isDeleted,
-        updatedAt: new Date(),
-        updatedBy: data.createdBy
-    }, {
-        where: {
-            id: data.id
-        }
-    }).then(fdetail => {
-        res.status(200).json({
-            "deskripsi": "Pembaharuan Data Detail Franchise",
-            "franchisedetail": fdetail
-        });
-    }).catch(err => {
-        res.status(500).json({
-            "description": "Tidak Dapat memperbaharui Data Detail Franchise",
-            "error": err
-        });
+    let data = req.body.dataSimpan;
+    brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
+        FranchiseDetail.update({
+            userId: data.franchiseId,
+            proviceId: data.provinceId,
+            regencyId: data.regencyId,
+            districtId: data.districtId,
+            postalId: data.postalId,
+            name: data.name,
+            owner: data.owner,
+            address: data.address,
+            contact_no: data.contactNo,
+            isDefault: data.isDefault,
+            isDeleted: data.isDeleted,
+            updatedAt: new Date(),
+            updatedBy: data.createdBy
+        }, {
+            where: {
+                id: data.idDetails
+            }
+        }).then(fdetail => {
+            res.status(200).json({
+                "deskripsi": "Pembaharuan Data Detail Franchise",
+                "franchisedetail": fdetail
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "description": "Tidak Dapat memperbaharui Data Detail Franchise",
+                "error": err
+            });
+        })
     })
 }
 

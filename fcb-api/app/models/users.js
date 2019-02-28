@@ -2,6 +2,12 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var users = sequelize.define('users', {
+		asFranchiseCode: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true,
+			field: 'as_franchise_code'
+		},
 		username: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -88,7 +94,6 @@ module.exports = function(sequelize, DataTypes) {
 		createdAt: {
 			type: DataTypes.DATE,
 			allowNull: false,
-			defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
 			field: 'createdAt'
 		},
 		updatedAt: {
@@ -109,22 +114,11 @@ module.exports = function(sequelize, DataTypes) {
 		salesId: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-			defaultValue: 0,
-			references: {
-				model: 'sales',
-				key: 'id'
-			},
-			field: 'sales_id'
 		},
 		rolesId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
-			defaultValue: 19,
-			references: {
-				model: 'roles',
-				key: 'id'
-			},
-			field: 'roles_id'
+			defaultValue: 19
 		},
 		deviceId: {
 			type: DataTypes.INTEGER,

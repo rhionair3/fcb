@@ -50,6 +50,7 @@ module.exports = function (brambang) {
     brambang.post("/api/detail-detailfranchise", [brambangJWT.verifikasiToken], franchise.detailFranchiseDetail);
     brambang.post("/api/koki-franchise", [brambangJWT.verifikasiToken], franchise.listKokiFranchise);
     brambang.post("/api/tambah-detailfranchise", [brambangJWT.verifikasiToken], franchise.createFranchiseDetail);
+    brambang.post("/api/edit-detailfranchise", [brambangJWT.verifikasiToken], franchise.editFranchiseDetail);
     brambang.post("/api/setDefault-detailfranchise", [brambangJWT.verifikasiToken], franchise.setDefaultDetails);
     brambang.post("/api/setDelete-detailfranchise", [brambangJWT.verifikasiToken], franchise.setDeleteDetails);
     //... End Rest Franchise

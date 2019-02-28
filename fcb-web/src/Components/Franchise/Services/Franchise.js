@@ -49,17 +49,31 @@ export const simpanDataFranchise = (dataSimpan) => {
 }
 
 export const simpanDataFranchiseDetails = (dataSimpan) => {
-    return fetch('http://192.168.1.52:3030/api/tambah-detailfranchise', {
-        method: 'POST',
-        body: JSON.stringify({
-            dataSimpan
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "brambang-access-token": sessionStorage.getItem("currentToken")
+    if (dataSimpan.idDetails && (dataSimpan.idDetails !== null || dataSimpan.idDetails !== "")) {
+        return fetch('http://192.168.1.52:3030/api/edit-detailfranchise', {
+            method: 'POST',
+            body: JSON.stringify({
+                dataSimpan
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "brambang-access-token": sessionStorage.getItem("currentToken")
 
-        }
-    });
+            }
+        });
+    } else {
+        return fetch('http://192.168.1.52:3030/api/tambah-detailfranchise', {
+            method: 'POST',
+            body: JSON.stringify({
+                dataSimpan
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "brambang-access-token": sessionStorage.getItem("currentToken")
+
+            }
+        });
+    }
 }
 
 export const getFranchiseDetailList = (franchiseId) => {

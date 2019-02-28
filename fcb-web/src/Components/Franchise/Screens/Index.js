@@ -72,7 +72,8 @@ class Franchise extends Component {
             districtId : "",
             postalId : "",
             address: "",
-            contactNo: ""
+            contactNo: "",
+            idDetails: ""
         };
     };
 
@@ -106,15 +107,18 @@ class Franchise extends Component {
         datadetail.then(response => {
             return response.json();
         }).then(result => {
-            if (result.franchise.id) {
+            console.log(result);
+            if (result.franchise !== null) {
                 let datafDetail = getFranchiseDetailList(result.franchise.id);
                 datafDetail.then(resp => {
                     return resp.json();
                 }).then(resfDetail => {
+                    console.log(resfDetail);
                     this.setState({
                         open: true,
                         formData: {
                             id: result.franchise.id,
+                            idDetails: resfDetail.franchiseDetails.id,
                             username: result.franchise.username,
                             email: result.franchise.email,
                             fullname: result.franchise.fullname,
@@ -142,6 +146,7 @@ class Franchise extends Component {
                     open: true,
                     formData: {
                         id: "",
+                        idDetails: "",
                         username: "",
                         email: "",
                         fullname: "",
@@ -167,6 +172,14 @@ class Franchise extends Component {
         });
     };
 
+    modelFormAlamat() {
+
+    }
+
+    modalFormGerobak() {
+        
+    }
+
     modalFormClose = () => {
         console.log('Harusnya Notif Tereksekusi');
         this.setState({
@@ -178,6 +191,7 @@ class Franchise extends Component {
         console.log("load submit" + this.state.id);
         let dataSimpan =  {
           id: this.state.id,
+          idDetails: this.state.idDetails,
           username: this.state.email,
           email: this.state.email,
           fullname: this.state.fullname,
@@ -186,7 +200,7 @@ class Franchise extends Component {
           bank_name: this.state.bank_name,
           bankAccountNo: this.state.bankAccountNo,
           bankAccountName: this.state.bankAccountName,
-          status: 1,
+          status: this.state.status,
           rolesId: 19,
           provinceId : this.state.provinceId,
           regencyId : this.state.regencyId,
@@ -195,7 +209,8 @@ class Franchise extends Component {
           userType: this.state.userType,
           owner: this.state.owner,
           address: this.state.address,
-          contactNo: this.state.contactNo
+          contactNo: this.state.contactNo,
+          isDefault: 1
         }
         let simpanData = simpanDataFranchise(dataSimpan);
         simpanData.then(response => {
@@ -253,7 +268,7 @@ class Franchise extends Component {
         this.setState({
             notify:false
         })
-        // window.location.reload();
+        window.location.reload();
     };
 
     handleChange = (value) => {

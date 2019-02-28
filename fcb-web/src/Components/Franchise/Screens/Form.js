@@ -57,7 +57,8 @@ class ProfilFranchise extends React.Component {
             userType: this.props.vd.userType,
             owner: this.props.vd.owner,
             address: this.props.vd.address,
-            contactNo: this.props.vd.contactNo
+            contactNo: this.props.vd.contactNo,
+            idDetails: this.props.vd.idDetails
         };
         this.updateParentData = this.updateParentData.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -96,7 +97,6 @@ class ProfilFranchise extends React.Component {
         const state = this.state;
         state[event.target.name] = event.target.value;
         this.setState(state, this.updateParentData);
-    // console.log(event.target.name);
     }
 
     handleDateChange = date => {
@@ -182,7 +182,7 @@ class ProfilFranchise extends React.Component {
           return (
             <React.Fragment>
             <Grid container spacing={24}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                     <input
                         id="id"
                         name="id"
@@ -191,10 +191,10 @@ class ProfilFranchise extends React.Component {
                         type="hidden"
                     />
                     <input
-                        id="status"
-                        name="status"
+                        id="idDetails"
+                        name = "idDetails"
                         fullWidth
-                        value="1"
+                        value={this.state.idDetails}
                         type="hidden"
                     />
                     <TextField
@@ -221,6 +221,32 @@ class ProfilFranchise extends React.Component {
                         <MenuItem value={1}>Pribadi</MenuItem>
                         <MenuItem value={2}>Perusahaan</MenuItem>
                         <MenuItem value={3}>Internal</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        id="status"
+                        name = "status"
+                        select
+                        label="Pilih Status Registrasi"
+                        value={this.state.status}
+                        onChange = {
+                            this.handleChange('status')
+                        }
+                        fullWidth
+                        SelectProps={{
+                            MenuProps: {
+                            className: classes.menu,
+                            },
+                        }}
+                        margin="dense"
+                        variant="outlined"
+                    >
+                        <MenuItem value="">
+                        <em>Pilih</em>
+                        </MenuItem>
+                        <MenuItem value={0}>Tidak Aktif</MenuItem>
+                        <MenuItem value={1}>Aktif</MenuItem>
                     </TextField>
                 </Grid>
                 <Grid item xs={12} sm={12}>
