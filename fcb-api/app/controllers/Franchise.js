@@ -3,7 +3,11 @@ const brambangDB = require('../configs/db');
 const Franchise = brambangDB.franchise;
 const FranchiseDetail = brambangDB.franchiseShip;
 const FranchiseKoki = brambangDB.koki;
-const getCode = require('../services/generateCode');
+const Propinsi = brambangDB.propinsi;
+const Kota = brambangDB.kota;
+const Kecamatan = brambangDB.kecamatan;
+const Kodepos = brambangDB.kodepos;
+const GetCode = require('../services/generateCode');
 
 exports.detailFranchise = (req, res) => {
     Franchise.findOne({
@@ -60,6 +64,43 @@ exports.listFranchise = (req, res) => {
     })
 }
 
+exports.listFranchiseDetail = (req, res) => {
+    FranchiseDetail.belongsTo(Franchise, {foreignKey : 'users_id'});
+    FranchiseDetail.belongsTo(Propinsi, {foreignKey : 'province_id'});
+    FranchiseDetail.belongsTo(Kota, {foreignKey : 'regency_id'});
+    FranchiseDetail.belongsTo(Kecamatan, {foreignKey : 'district_id'});
+    FranchiseDetail.belongsTo(Kodepos, {foreignKey : 'postal_id'});
+    FranchiseDetail.findAll({
+        where: {
+            usersId: req.body.usersId
+        },
+        attributes: [
+          'id',
+          'owner',
+          'address',
+          'contactNo',
+          'isDefault'
+        ],
+        include: [
+          { model : Franchise, attributes:[['id', 'usersId'], 'fullname']},
+          { model : Propinsi, attributes:[['id', 'provId'], ['name', 'provName']]},
+          { model : Kota, attributes:[['id', 'kotaId'], ['name', 'kotaName']]},
+          { model : Kecamatan, attributes:[['id', 'kecId'], ['name', 'kecName']]},
+          { model : Kodepos, attributes:[['id', 'posId'], 'postalCode']},
+        ]
+    }).then(franchises => {
+        res.status(200).json({
+            'deskripsi': 'Detail Franchise',
+            'franchiseDetails': franchises
+        })
+    }).catch(err => {
+        res.status(500).json({
+            "deskripsi": "Tidak Dapat Menampilkan Detail Franchise",
+            "franchise": "Gagal Load Detail Franchise"
+        });
+    })
+}
+
 exports.listKokiFranchise = (req, res) => {
     FranchiseKoki.findAll({
         where: {
@@ -79,7 +120,7 @@ exports.listKokiFranchise = (req, res) => {
 }
 
 exports.createFranchise = (req, res) => {
-    let fCode = getCode.generateFranchiseCode('data');
+    let fCode = GetCode.generateFranchiseCode('data');
     let data = req.body.dataSimpan;
     fCode.then(result => {
         brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then(function () {

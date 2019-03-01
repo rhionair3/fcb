@@ -134,6 +134,9 @@ const stylesBrambang = theme => ({
         paddingBottom: 6,
         paddingTop: 10
     },
+    floatRight: {
+      float: 'right'
+    }
 });
 
 export default stylesBrambang;

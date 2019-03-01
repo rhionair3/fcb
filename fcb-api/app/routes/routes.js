@@ -47,6 +47,7 @@ module.exports = function (brambang) {
     brambang.post("/api/tambah-franchise", [brambangJWT.verifikasiToken], franchise.createFranchise);
     brambang.post("/api/edit-franchise", [brambangJWT.verifikasiToken], franchise.editFranchise);
     brambang.post("/api/delete-franchise", [brambangJWT.verifikasiToken], franchise.deleteFranchise);
+    brambang.post("/api/list-detailfranchise", [brambangJWT.verifikasiToken], franchise.listFranchiseDetail);
     brambang.post("/api/detail-detailfranchise", [brambangJWT.verifikasiToken], franchise.detailFranchiseDetail);
     brambang.post("/api/koki-franchise", [brambangJWT.verifikasiToken], franchise.listKokiFranchise);
     brambang.post("/api/tambah-detailfranchise", [brambangJWT.verifikasiToken], franchise.createFranchiseDetail);

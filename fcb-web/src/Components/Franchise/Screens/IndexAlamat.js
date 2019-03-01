@@ -1,12 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import stylesBrambang from '../../../../public/themes/stylesBrambang';
+import MUIDatatable from 'mui-datatables';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import Tooltip from "@material-ui/core/Tooltip";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { getProvince, getRegency, getDistrict, getPostal } from "../Services/Alamat";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     root: {
@@ -23,178 +38,107 @@ const styles = theme => ({
     paddingPaper: {
         padding: 5
     }
+
 });
 
-let provList = new Array();
-let regList = new Array();
-let distList = new Array();
-let postList = new Array();
-class ProfilFranchise extends React.Component {
+class ListDataAlamat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: true,
-            role_id: "",
-            fname : "",
-            regList : {},
-            getReady : false,
-            id: this.props.vd.id,
-            username: this.props.vd.username,
-            email: this.props.vd.email,
-            fullname: this.props.vd.fullname,
-            identityNo: this.props.vd.identityNo,
-            city: this.props.vd.city,
-            mobile: this.props.vd.mobile,
-            bank_name: this.props.vd.bank_name,
-            bankAccountNo: this.props.vd.bankAccountNo,
-            bankAccountName: this.props.vd.bankAccountName,
-            status: this.props.vd.status,
-            roleId: this.props.vd.roleId,
-            provinceId :this.props.vd.provinceId,
-            regencyId :this.props.vd.regencyId,
-            districtId :this.props.vd.districtId,
-            postalId :this.props.vd.postalId,
-            userType: this.props.vd.userType,
-            owner: this.props.vd.owner,
-            address: this.props.vd.address,
-            contactNo: this.props.vd.contactNo,
-            idDetails: this.props.vd.idDetails
-        };
-        this.updateParentData = this.updateParentData.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    };
-
-    componentDidMount() {
-        if(this.state.provinceId !== "") {
-            this.onChangeProvince.bind(this);
+          openListAlamat  : this.props.statusOpen,
+          listAlamat      : this.props.listAlamat,
+          getReady        : false
         }
-      let getProvinceList = getProvince();
-      getProvinceList.then(resProv => {
-          return resProv.json();
-      }).then(resultProv => {
-        console.log(resultProv);
-          let rows = {};
-          resultProv.provincy.map(item => {
-            rows = {
-                    id : item.id,
-                    name : item.name
-                  }
-            provList.push(rows);
-            this.setState({
-                getReady : true
-            });
-            return "Success";
-          })
-          console.log(this.state.getReady);
-      })
     }
-
-    updateParentData() {
-      this.props.onChildChange(this.state);
-    }
-
-    handleChange = () => event => {
-        const state = this.state;
-        state[event.target.name] = event.target.value;
-        this.setState(state, this.updateParentData);
-    }
-
-    handleDateChange = date => {
-        this.setState({ selectedDate: moment(date, 'YYYY-MM-DD') });
-    };
-
-    onChangeProvince = () => event => {
-        let getReg = getRegency(event.target.value);
-        getReg.then(resReg => {
-            return resReg.json();
-        }).then(resultReg => {
-          let rows = {};
-          regList = [];
-          resultReg.regency.map(item => {
-            rows = {
-                    id : item.id,
-                    name : item.name
-                  }
-            regList.push(rows);
-            const state = this.state;
-            state[event.target.name] = event.target.value;
-            this.setState(state, this.updateParentData);
-            this.setState({
-                getReady : true
-            });
-            return "regList";
-          })
-        })
-    }
-
-    onChangeRegency = () => event => {
-        let getDist = getDistrict(event.target.value);
-        getDist.then(resDist => {
-            return resDist.json();
-        }).then(resultDist => {
-            let rows = {};
-            distList =[];
-            resultDist.district.map(item => {
-                rows = {
-                        id : item.id,
-                        name : item.name
-                      }
-                distList.push(rows);
-                const state = this.state;
-                state[event.target.name] = event.target.value;
-                this.setState(state, this.updateParentData);
-                this.setState({
-                    getReady : true
-                });
-                return "distList";
-            })
-        })
-    }
-
-    onChangeDistrict = () => event => {
-        let getPost = getPostal(event.target.value);
-        getPost.then(resPost => {
-            return resPost.json();
-        }).then(resultPost => {
-          console.log(resultPost);
-            let rows = {};
-            postList = [];
-            resultPost.postal.map(item => {
-                rows = {
-                        id : item.id,
-                        postal_code : item.postalCode
-                      }
-                postList.push(rows);
-                const state = this.state;
-                state[event.target.name] = event.target.value;
-                this.setState(state, this.updateParentData);
-                this.setState({
-                    getReady : true
-                });
-                return "postList";
-            })
-        })
-    }
-
     render() {
-        
         const { classes } = this.props;
-          return (
-            <React.Fragment>
-            <div>
-                <Paper className={classes.paddingPaper}>
-                    <Typography variant="h6" component="h6"> List Alamat yang Digunakan Franchise </Typography>
-                    <Typography component="p"> Penambahan Alamat Hanya Dapat Dilakukan Dihalaman Ini </Typography>
-                    <Typography component="p"> Alamat Yang Akan Dan Dapat Digunakan Untuk Pengiriman / Pengantaran Adalah Yang Berstatus Default  </Typography>
-                </Paper>
-            </div>
-            </React.Fragment>
-        );
+        const columns = [
+          {
+              name: "Nama Lengkap",
+              options: {
+                  filter: true
+              }
+          },{
+              name: "Alamat",
+              options: {
+                  filter: true
+              }
+          },{
+              name: "Nomor Telp",
+              options: {
+                  filter: true
+              }
+          },{
+              name: "Setting",
+              options: {
+                  filter: true
+              }
+          },
+        ];
+        const data = this.props.listAlamat;
+        const options = {
+            filterType: 'dropdown',
+            customToolbar: () => {
+                return (
+                    <Tooltip title={"Tambah Gerobak"} style={{marginLeft:20}}>
+                        <Fab size="small" color="secondary" aria-label="Add" className={classes.btnInfo}>
+                        <AddIcon />
+                        </Fab>
+                    </Tooltip>
+                );
+            },
+            customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => {
+              return (
+                  <TableFooter>
+                    <TableRow>
+                      <TableCell>
+                        <TablePagination
+                          count={count}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          onChangePage={(_, page) => changePage(page)}
+                          onChangeRowsPerPage={event => changeRowsPerPage(event.target.value)}
+                          rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                        />
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="outline" color="primary" className={classNames(classes.btnDefault, classes.floatRight)}>
+                        Tutup
+                      </Button>
+                    </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                );
+          }
+        };
+        console.log(data);
+        return (
+          <React.Fragment>
+          <div>
+            <Dialog
+                open={this.props.statusOpen}
+                disableBackdropClick={true}
+                onClose={null}
+                onExited={null}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                maxWidth = 'lg'
+                scroll = 'body'
+            >
+                <MUIDatatable
+                    title={"List Alamat Pengiriman"}
+                    data={data}
+                    columns={columns}
+                    options={options}
+                />
+            </Dialog>
+          </div>
+          </React.Fragment>
+      );
     }
-
 }
-ProfilFranchise.propTypes = {
+ListDataAlamat.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ProfilFranchise);
+export default withStyles(stylesBrambang, { withTheme: true })(ListDataAlamat);

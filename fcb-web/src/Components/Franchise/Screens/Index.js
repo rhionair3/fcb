@@ -16,11 +16,14 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import { Edit, DeleteForever, AddShoppingCart, Streetview } from '@material-ui/icons';
+import { Edit, DeleteForever, AddShoppingCart, Streetview, SupervisorAccount } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import stylesBrambang from '../../../../public/themes/stylesBrambang';
 import FormFranchise from './Form';
-import { getFranchiseList, getFranchiseDetail, simpanDataFranchise, updateFranchise, simpanDataFranchiseDetails, getFranchiseDetailList } from "../Services/Franchise";
+import ListAlamat from './IndexAlamat';
+import ListGerobak from './IndexGerobak';
+import ListKoki from './IndexKoki';
+import { getFranchiseList, getFranchiseDetail, simpanDataFranchise, updateFranchise, simpanDataFranchiseDetails, getFranchiseDetailDetail, getFranchiseDetailList } from "../Services/Franchise";
 
 function TabContainer(props) {
   return (
@@ -73,7 +76,13 @@ class Franchise extends Component {
             postalId : "",
             address: "",
             contactNo: "",
-            idDetails: ""
+            idDetails: "",
+            formDataAlamat: [],
+            formDataGerobak: [],
+            openListAlamat : false,
+            openListGerobak : false,
+            openListKoki : false,
+            formDataKoki : ""
         };
     };
 
@@ -108,109 +117,153 @@ class Franchise extends Component {
             return response.json();
         }).then(result => {
             console.log(result);
-            if (result.franchise !== null) {
-                let datafDetail = getFranchiseDetailList(result.franchise.id);
+            if (result.franchise && result.franchise.id) {
+                let datafDetail = getFranchiseDetailDetail(result.franchise.id);
                 datafDetail.then(resp => {
                     return resp.json();
                 }).then(resfDetail => {
                     console.log(resfDetail);
                     this.setState({
-                        open: true,
-                        formData: {
-                            id: result.franchise.id,
-                            idDetails: resfDetail.franchiseDetails.id,
-                            username: result.franchise.username,
-                            email: result.franchise.email,
-                            fullname: result.franchise.fullname,
-                            identityNo: result.franchise.identityNo,
-                            city: result.franchise.city,
-                            mobile: result.franchise.mobile,
-                            bank_name: result.franchise.bank_name,
-                            bankAccountNo: result.franchise.bankAccountNo,
-                            bankAccountName: result.franchise.bankAccountName,
-                            status: result.franchise.status,
-                            roleId: result.franchise.roleId,
-                            userType: result.franchise.userType,
-                            contactNo: result.franchise.contactNo,
-                            provinceId: resfDetail.franchiseDetails.provinceId,
-                            regencyId: resfDetail.franchiseDetails.regencyId,
-                            districtId: resfDetail.franchiseDetails.districtId,
-                            postalId: resfDetail.franchiseDetails.postalId,
-                            owner: resfDetail.franchiseDetails.owner,
-                            address: resfDetail.franchiseDetails.address
+                        open      : true,
+                        formData  : {
+                            id              : result.franchise.id,
+                            idDetails       : resfDetail.franchiseDetails.id,
+                            username        : result.franchise.username,
+                            email           : result.franchise.email,
+                            fullname        : result.franchise.fullname,
+                            identityNo      : result.franchise.identityNo,
+                            city            : result.franchise.city,
+                            mobile          : result.franchise.mobile,
+                            bank_name       : result.franchise.bank_name,
+                            bankAccountNo   : result.franchise.bankAccountNo,
+                            bankAccountName : result.franchise.bankAccountName,
+                            status          : result.franchise.status,
+                            roleId          : result.franchise.roleId,
+                            userType        : result.franchise.userType,
+                            contactNo       : result.franchise.contactNo,
+                            provinceId      : resfDetail.franchiseDetails.provinceId,
+                            regencyId       : resfDetail.franchiseDetails.regencyId,
+                            districtId      : resfDetail.franchiseDetails.districtId,
+                            postalId        : resfDetail.franchiseDetails.postalId,
+                            owner           : resfDetail.franchiseDetails.owner,
+                            address         : resfDetail.franchiseDetails.address
                         }
                     });
                 })
             } else {
                 this.setState({
-                    open: true,
-                    formData: {
-                        id: "",
-                        idDetails: "",
-                        username: "",
-                        email: "",
-                        fullname: "",
-                        identityNo: "",
-                        city: "",
-                        mobile: "",
-                        bank_name: "",
-                        bankAccountNo: "",
-                        bankAccountName: "",
-                        status: "",
-                        roleId: "",
-                        provinceId: "",
-                        regencyId: "",
-                        districtId: "",
-                        postalId: "",
-                        userType: "",
-                        owner: "",
-                        address: "",
-                        contactNo: ""
+                    open      : true,
+                    formData  : {
+                        id              : "",
+                        idDetails       : "",
+                        username        : "",
+                        email           : "",
+                        fullname        : "",
+                        identityNo      : "",
+                        city            : "",
+                        mobile          : "",
+                        bank_name       : "",
+                        bankAccountNo   : "",
+                        bankAccountName : "",
+                        status          : "",
+                        roleId          : "",
+                        provinceId      : "",
+                        regencyId       : "",
+                        districtId      : "",
+                        postalId        : "",
+                        userType        : "",
+                        owner           : "",
+                        address         : "",
+                        contactNo       : ""
                     }
                 });
             }
         });
     };
 
-    modelFormAlamat() {
+    modalFormOpenAlamat = (value) => {
+      let fDetailList = getFranchiseDetailList(value);
+      fDetailList.then(response => {
+          return response.json();
+      }).then( result => {
+        let getRawAlamat = []
+        result.franchiseDetails.map(item => {
+            let alamatLengkap = item.address + ", " + item.district.kecName + ", " + item.regency.kotaName + ", " + item.province.provName + " - " + item.postal.postalCode;
+            let dataList = [
+              item.owner,
+              alamatLengkap,
+              item.contactNo,
+              item.id
+            ];
+
+            getRawAlamat.push(dataList);
+            this.setState({
+                getReady : true
+            });
+            return "Success";
+        });
+          this.setState({
+            openListAlamat : true,
+            formDataAlamat : getRawAlamat
+          })
+      })
+    }
+
+    modalFormCloseAlamat() {
 
     }
 
-    modalFormGerobak() {
-        
+    modalFormOpenGerobak() {
+      this.setState({
+        openListGerobak : true,
+        formDataGerobak : ""
+      })
+    }
+
+    modalFormCloseGerobak() {
+
+    }
+
+    modalFormOpenKoki() {
+      this.setState({
+        openListKoki : true,
+        formDataKoki : ""
+      })
+    }
+
+    modalFormCloseKoki() {
+
     }
 
     modalFormClose = () => {
-        console.log('Harusnya Notif Tereksekusi');
         this.setState({
             open: false,
         });
     };
 
     submitForm = () => {
-        console.log("load submit" + this.state.id);
         let dataSimpan =  {
-          id: this.state.id,
-          idDetails: this.state.idDetails,
-          username: this.state.email,
-          email: this.state.email,
-          fullname: this.state.fullname,
-          identityNo: this.state.identityNo,
-          mobile: this.state.mobile,
-          bank_name: this.state.bank_name,
-          bankAccountNo: this.state.bankAccountNo,
-          bankAccountName: this.state.bankAccountName,
-          status: this.state.status,
-          rolesId: 19,
-          provinceId : this.state.provinceId,
-          regencyId : this.state.regencyId,
-          districtId : this.state.districtId,
-          postalId : this.state.postalId,
-          userType: this.state.userType,
-          owner: this.state.owner,
-          address: this.state.address,
-          contactNo: this.state.contactNo,
-          isDefault: 1
+          id              : this.state.id,
+          idDetails       : this.state.idDetails,
+          username        : this.state.email,
+          email           : this.state.email,
+          fullname        : this.state.fullname,
+          identityNo      : this.state.identityNo,
+          mobile          : this.state.mobile,
+          bank_name       : this.state.bank_name,
+          bankAccountNo   : this.state.bankAccountNo,
+          bankAccountName : this.state.bankAccountName,
+          status          : this.state.status,
+          rolesId         : 19,
+          provinceId      : this.state.provinceId,
+          regencyId       : this.state.regencyId,
+          districtId      : this.state.districtId,
+          postalId        : this.state.postalId,
+          userType        : this.state.userType,
+          owner           : this.state.owner,
+          address         : this.state.address,
+          contactNo       : this.state.contactNo,
+          isDefault       : 1
         }
         let simpanData = simpanDataFranchise(dataSimpan);
         simpanData.then(response => {
@@ -229,23 +282,23 @@ class Franchise extends Component {
                 if (rDetails) {
                     status_m = "success";
                     if (this.state.id && (this.state.id !== null || this.state.id !== "")) {
-                        header_m = "Pembaharuan Data Franchise";
-                        m = "Sukses memperbaharui Franchise ... "
+                        header_m  = "Pembaharuan Data Franchise";
+                        m         = "Sukses memperbaharui Franchise ... "
                     } else {
-                        header_m = "Menambah Data Franchise";
-                        m = "Sukses menambahkan Franchise ..."
+                        header_m  = "Menambah Data Franchise";
+                        m         = "Sukses menambahkan Franchise ..."
                     }
                 } else {
-                    status_m = "failed";
-                    header_m = "Error Dalam Menyimpan";
-                    m = "Gagal menyimpan data ..."
+                    status_m      = "failed";
+                    header_m      = "Error Dalam Menyimpan";
+                    m             = "Gagal menyimpan data ..."
                 }
                 this.setState({
-                    open: false,
-                    message_status: status_m,
-                    message_header: header_m,
-                    message: m,
-                    notify_stat: true
+                    open            : false,
+                    message_status  : status_m,
+                    message_header  : header_m,
+                    message         : m,
+                    notify_stat     : true
                 });
             })
         });
@@ -296,12 +349,12 @@ class Franchise extends Component {
         }).then(result => {
             console.log(result);
             this.setState({
-                openDel: false,
-                message_status: "delete",
-                message_header: "Berhasil Menonaktifkan Data Gerobak",
-                message: "Gerobak Dinonaktifkan !",
-                notify_stat: true,
-                idDeleted: ""
+                openDel         : false,
+                message_status  : "delete",
+                message_header  : "Berhasil Menonaktifkan Data Gerobak",
+                message         :  "Gerobak Dinonaktifkan !",
+                notify_stat     : true,
+                idDeleted       : ""
             });
         })
     }
@@ -371,13 +424,18 @@ class Franchise extends Component {
                                     </ToggleButton>
                                 </Tooltip>
                                 <Tooltip title={"Edit Alamat Pengiriman"}>
-                                    <ToggleButton className={classes.btnInfo} onClick={() => this.modalFormOpen(value)}>
+                                    <ToggleButton className={classes.btnInfo} onClick={() => this.modalFormOpenAlamat(value)}>
                                         <Streetview />
                                     </ToggleButton>
                                 </Tooltip>
                                 <Tooltip title={"Edit Data Gerobak"}>
-                                    <ToggleButton className={classes.btnDefault} onClick={() => this.modalFormOpen(value)}>
+                                    <ToggleButton className={classes.btnDefault} onClick={() => this.modalFormOpenGerobak(value)}>
                                         <AddShoppingCart />
+                                    </ToggleButton>
+                                </Tooltip>
+                                <Tooltip title={"Edit Data Koki"}>
+                                    <ToggleButton className={classes.btnPrimary} onClick={() => this.modalFormOpenKoki(value)}>
+                                        <SupervisorAccount />
                                     </ToggleButton>
                                 </Tooltip>
                             </ToggleButtonGroup>
@@ -456,24 +514,27 @@ class Franchise extends Component {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                        <form className={classes.form} action="/" method="POST" onSubmit={(e) => { e.preventDefault(); this.submitDelete();}}>
-                            <DialogTitle id="alert-dialog-title">Konfirmasi Hapus Data Franchise</DialogTitle>
-                            <DialogContent bacgroundColor="primary">
-                                <DialogContentText id="alert-dialog-description">
-                                    Data Gerobak Franchise Akan Dihapus Dari List. Dan Tidak Akan tampil Diwaktu Berikutnya.
-                                    Apakah Anda Yakin Ingin Menghapus Data Gerobak Franchise ?
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={this.confirmDeleteClose} color="primary">
-                                    Batal
-                                </Button>
-                                <Button type="submit" color="primary" autoFocus>
-                                    Ya, Hapus
-                                </Button>
-                            </DialogActions>
-                        </form>
+                          <form className={classes.form} action="/" method="POST" onSubmit={(e) => { e.preventDefault(); this.submitDelete();}}>
+                              <DialogTitle id="alert-dialog-title">Konfirmasi Hapus Data Franchise</DialogTitle>
+                              <DialogContent bacgroundColor="primary">
+                                  <DialogContentText id="alert-dialog-description">
+                                      Data Gerobak Franchise Akan Dihapus Dari List. Dan Tidak Akan tampil Diwaktu Berikutnya.
+                                      Apakah Anda Yakin Ingin Menghapus Data Gerobak Franchise ?
+                                  </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                  <Button onClick={this.confirmDeleteClose} color="primary">
+                                      Batal
+                                  </Button>
+                                  <Button type="submit" color="primary" autoFocus>
+                                      Ya, Hapus
+                                  </Button>
+                              </DialogActions>
+                          </form>
                         </Dialog>
+                        <ListAlamat listAlamat = {this.state.formDataAlamat} statusOpen = {this.state.openListAlamat} onChildChange = {(value) => this.onChildChange(value)}/>
+                        <ListGerobak listGerobak = {this.state.formDataGerobak} statusOpen = {this.state.openListGerobak} onChildChange = {(value) => this.onChildChange(value)}/>
+                        <ListKoki listGerobak = {this.state.formDataKoki} statusOpen = {this.state.openListKoki} onChildChange = {(value) => this.onChildChange(value)}/>
                     </Paper>
                 </div>
                 <Snackbar

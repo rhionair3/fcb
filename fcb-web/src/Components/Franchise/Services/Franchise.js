@@ -76,9 +76,24 @@ export const simpanDataFranchiseDetails = (dataSimpan) => {
     }
 }
 
-export const getFranchiseDetailList = (franchiseId) => {
+export const getFranchiseDetailDetail = (franchiseId) => {
     console.log(franchiseId);
     return fetch('http://192.168.1.52:3030/api/detail-detailfranchise', {
+        method: 'POST',
+        body: JSON.stringify({
+            usersId: franchiseId
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "brambang-access-token": sessionStorage.getItem("currentToken")
+
+        }
+    });
+}
+
+export const getFranchiseDetailList = (franchiseId) => {
+    console.log(franchiseId);
+    return fetch('http://192.168.1.52:3030/api/list-detailfranchise', {
         method: 'POST',
         body: JSON.stringify({
             usersId: franchiseId

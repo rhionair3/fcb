@@ -20,23 +20,16 @@ var self = module.exports = {
       }
       return r;
     },
-    // countFranchise : async (req, res, next) => {
-    //   var result =  await Franchise.findAndCountAll({
-    //     where: Sequelize.where(Sequelize.col('createdAt'), 'LIKE', now + "%"),
-    //     raw: true
-    //   });
+    // countFranchiseKoki : function(franchise_id) {
+    //   Koki.findAndCountAll({
+    //     where : {
+    //       franchise_id : franchise_id
+    //     }
+    //   }).then(result => {
+    //       console.log(result.count);
+    //       return result.count;
+    //   })
     // },
-
-    countFranchiseKoki : function(franchise_id) {
-      Koki.findAndCountAll({
-        where : {
-          franchise_id : franchise_id
-        }
-      }).then(result => {
-          console.log(result.count);
-          return result.count;
-      })
-    },
 
     countFranchiseGerobak : function(franchise_id) {
       Gerobak.findAndCountAll({
@@ -54,7 +47,6 @@ var self = module.exports = {
         raw: true
       });
       let data = result;
-      console.log(data.count);
       if (data.count > 0) {
           var getDateCode = splitDate;
           var getCountNum = self.formatNumLength((data.count + 1), lengthDefine);
@@ -73,62 +65,59 @@ var self = module.exports = {
       }
     },
 
-    generateKokiCode : function(franchiseId) {
-      let FranchiseCode = "";
-      Franchise.findOne({
-        where : {
-          id : franchiseId
-        }
-      }).then(response => {
-          return response.json;
-      }).then(result => {
-          FranchiseCode = result.franchise.code;
-          return "Get Franchise Code";
-      })
-
-      if(self.countFranchiseKoki > 0) {
-          var getCountNum = self.formatNumLength(self.countFranchise, lengthDefine);
+    generateKokiCode : async (franchiseId) => {
+      var countKoki = await Koki.findAndCountAll({
+        where : { franchise_id : franchise_id },
+        raw : true
+      });
+      var findFranchise = await Franchise.findOne({
+        where : { id : franchiseId },
+        raw : true
+      });
+      let cKoki = countKoki;
+      let fFranchise = findFranchise;
+      if(cKoki.count > 0) {
+          var getCountNum = self.formatNumLength(cKoki.count, lengthDefine);
 
           var getCode = "K" + getCountNum;
 
-          return FranchiseCode + "" + getCode;
+          return fFranchise.asFranchiseCode + "" + getCode;
 
       } else {
           var getCountNum = self.formatNumLength(1, lengthDefine);
 
           var getCode = "K" + getCountNum;
 
-          return FranchiseCode + "" + getCode;
+          return fFranchise.asFranchiseCode + "" + getCode;
       }
 
     },
 
-    generateGerobakCode : function(franchiseId) {
-      let FranchiseCode = "";
-      Franchise.findOne({
-        where : {
-          id : franchiseId
-        }
-      }).then(response => {
-          return response.json;
-      }).then(result => {
-          FranchiseCode = result.franchise.code;
-          return "Get Franchise Code";
-      })
+    generateGerobakCode : async (franchiseId) => {
+      var countGerobak = await Gerobak.findAndCountAll({
+        where : { franchiseId : franchiseId },
+        raw : true
+      });
+      var findFranchise = await Franchise.findOne({
+        where : { id : franchiseId },
+        raw : true
+      });
+      let cGerobak = countGerobak;
+      let fFranchise = findFranchise;
 
-      if(self.countFranchiseGerobak > 0) {
-          var getCountNum = self.formatNumLength(self.countFranchise, lengthDefine);
+      if(cGerobak.count > 0) {
+          var getCountNum = self.formatNumLength(cGerobak.count, lengthDefine);
 
           var getCode = "G" + getCountNum;
 
-          return FranchiseCode + "" + getCode;
+          return fFranchise.asFranchiseCode + "" + getCode;
 
       } else {
           var getCountNum = self.formatNumLength(1, lengthDefine);
 
           var getCode = "G" + getCountNum;
 
-          return FranchiseCode + "" + getCode;
+          return fFranchise.asFranchiseCode + "" + getCode;
       }
 
     }

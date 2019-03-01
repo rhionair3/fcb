@@ -13,10 +13,9 @@ const Aturan = brambangDB.aturan;
 
 brambangDB.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true }).then ( function () {
     brambangDB.sequelize.sync({
-        force: true
+        force: false
     }).then(() => {
         console.log('sinkronisasi data { force : true }');
-    
         inisialisasi();
     });
 });
